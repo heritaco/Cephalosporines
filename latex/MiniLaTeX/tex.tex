@@ -1,0 +1,105 @@
+\documentclass[8pt,a4paper]{article} % Compila con lualatex o xelatex
+
+% --- Layout & links ---
+\usepackage[margin=1.5in]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+% --- Fuentes (texto y matemáticas) ---
+\usepackage[cmintegrals,cmbraces]{newtxmath}
+\usepackage{ebgaramond-maths}
+\usepackage{fontspec}
+\setmainfont{EB Garamond}[
+    UprightFont = * Regular,
+    ItalicFont = * Italic,
+    BoldFont = * SemiBold,
+    BoldItalicFont = * SemiBold Italic,
+]
+
+
+% --- Secciones y subsecciones ---
+\usepackage{titlesec}
+
+\newfontface\bold{EB Garamond Bold}
+\newfontface\bolditalic{EB Garamond  Bold Italic}
+\newfontface\extrabold{EB Garamond ExtraBold}
+
+\titleformat{\section}
+  {\bold\Large}{\thesection}{0.5em}{}
+\titleformat{\subsection}
+  {\bold\large}{\thesubsection}{0.5em}{}
+
+
+% --- Encabezado simple ---
+% \usepackage{fancyhdr}
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[L]{\small\textsc{AI in Financial Services}}
+% \fancyhead[R]{\small\thepage}
+% \renewcommand{\headrulewidth}{0.05pt}
+
+
+% --- Espaciado ---
+\usepackage{setspace}
+\setstretch{1.2}
+\setlength{\parskip}{0.2em}
+
+
+
+\begin{document}
+\thispagestyle{empty}
+\section*{Objective}
+
+We model the probability that an adverse reaction belongs to a given
+MedDRA System Organ Class (SOC) using patient, product, dose and
+administration information from the Canada Vigilance dataset. Let
+\(\mathbf{x}\) be the vector of predictors and \(Y\) the SOC label:
+
+\[
+\hat{y}
+  = \arg\max_{\text{soc}} \Pr\bigl(Y = \text{soc} \mid \mathbf{x}\bigr),
+\qquad
+Y \equiv \text{SOC\_NAME\_ENG}.
+\]
+
+\section*{Predictors (Inputs)}
+
+\noindent
+\textbf{Demographics and anthropometrics}
+\begin{itemize}
+  \item \texttt{GENDER\_CODE}: Encoded sex of the patient.
+  \item \texttt{age\_y}: Age in years.
+  \item \texttt{weight\_kg}: Body weight in kilograms.
+  \item \texttt{height\_cm}: Height in centimetres.
+\end{itemize}
+
+\noindent
+\textbf{Exposure and dosing}
+\begin{itemize}
+  \item \texttt{routeadmin\_eng}: Route of administration (e.g.\ oral, IV).
+  \item \texttt{unit\_dose\_qty}: Numeric dose per administration.
+  \item \texttt{dose\_unit\_eng}: Dose unit in English (e.g.\ mg, mg/kg, mL).
+  \item \texttt{hours\_between\_medicament}: Time in hours between administrations.
+\end{itemize}
+
+\noindent
+\textbf{Product and indication}
+\begin{itemize}
+  \item \texttt{indication\_name\_eng}: Therapeutic indication in English.
+  \item \texttt{active\_ingredient\_name}: Active ingredient name(s) of the product.
+\end{itemize}
+
+\section*{Target (Output)}
+
+\begin{itemize}
+  \item \texttt{SOC\_NAME\_ENG}: MedDRA System Organ Class in English
+        (e.g.\ ``Cardiac disorders'', ``Skin and subcutaneous tissue disorders'').
+\end{itemize}
+
+\section*{Modeling Note}
+
+This is a supervised multi-class classification problem with potential
+class imbalance across SOCs. Evaluation should therefore include
+macro-averaged metrics (e.g.\ macro-F1, macro-recall) and confusion
+matrices by SOC.
+
+\end{document}
