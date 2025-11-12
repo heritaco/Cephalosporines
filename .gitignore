@@ -1,2 +1,5 @@
 # ignore this folder and its contents: data/Canada Vigilance Adverse Reaction Online Database
 data/Canada Vigilance Adverse Reaction Online Database/
+
+# the catboost_info folder created by CatBoost to store model info
+catboost_info/
